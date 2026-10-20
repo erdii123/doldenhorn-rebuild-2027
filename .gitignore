@@ -1,0 +1,15 @@
+# Privat: Briefing, Kundenfeedback, Zugangsdaten
+briefing/
+feedback/
+*.env
+.env*
+
+# Build
+node_modules/
+dist/
+.astro/
+.netlify/
+
+# System
+.DS_Store
+Thumbs.db
