@@ -1,0 +1,232 @@
+{
+  "name": "Waldhotel Doldenhorn",
+  "slogan": "Zu Gast – bei Freunden",
+  "ort": "Kandersteg",
+  "region": "Berner Oberland",
+  "kontakt": {
+    "strasse": "Doldenhornstrasse 26",
+    "plz": "3718",
+    "ort": "Kandersteg",
+    "land": "CH",
+    "telefon": "+41 33 675 81 81",
+    "telefonLink": "tel:+41336758181",
+    "email": "info@doldenhorn.ch",
+    "emailEvent": "event@doldenhorn.ch",
+    "emailSpa": "spa@doldenhorn.ch",
+    "emailJobs": "jobs@doldenhorn.ch",
+    "karte": "https://maps.app.goo.gl/qQKxnFZC7qPf421z8",
+    "instagram": "https://www.instagram.com/waldhotel.doldenhorn/",
+    "facebook": "https://www.facebook.com/profile.php?id=100063561793985"
+  },
+  "links": {
+    "buchen": "https://www.simplebooking.it/ibe2/hotel/11517?cur=CHF",
+    "spaTermin": "https://calendly.com/spa-doldenhorn",
+    "ruedihus": "https://doldenhorn-ruedihus.ch/ruedihus/",
+    "hauszeitung": "media/doldenhornpost-sommer-2026.pdf"
+  },
+  "seo": {
+    "title": "Waldhotel Doldenhorn Kandersteg | Relais & Châteaux",
+    "description": "Das 4-Sterne-Superior-Hotel der Familie Maeder in Kandersteg: Zimmer mit Bergsicht, Au Gourmet, Spa mit Hallenbad aus eigener Quelle. Zu Gast bei Freunden."
+  },
+  "hero": {
+    "eyebrow": "Waldhotel Doldenhorn · Kandersteg",
+    "zeile": "Relais & Châteaux · 4 Sterne Superior · seit 1976 in Familienhand"
+  },
+  "gastgeber": {
+    "titel": "Herzlich willkommen im Waldhotel Doldenhorn",
+    "absaetze": [
+      "Wir würden uns geehrt fühlen, Sie als unsere Gäste begrüssen zu dürfen.",
+      "Wir haben die kleine Pension Doldenhorn im Jahr 1976 erworben. Durch kontinuierliche Erweiterungen und Renovierungen haben wir sie zu dem 4-Sterne-Superior-Hotel gemacht, das es heute ist.",
+      "Zusätzlich betreiben wir das charmante Ruedihus mit seinem eigenen rustikalen Charme. Atmen Sie die 250 Jahre Geschichte ein, die sich in seinen Mauern verbirgt.",
+      "Wir werden unser Bestes tun, damit Sie eine schöne Zeit bei uns haben. Bis bald."
+    ],
+    "unterschrift": "Anne und René Maeder, Patric und Riana Maeder, Lisa Ziegler",
+    "fakten": [
+      {
+        "wert": "1976",
+        "text": "übernimmt Familie Maeder die kleine Pension Doldenhorn"
+      },
+      {
+        "wert": "2016",
+        "text": "wird das Waldhotel Mitglied von Relais & Châteaux"
+      },
+      {
+        "wert": "5",
+        "text": "Menüs zur Wahl für Halbpensionsgäste, jeden Abend in zwei Häusern"
+      }
+    ]
+  },
+  "zimmer": {
+    "titel": "Zimmer & Suiten",
+    "intro": "Einige Zimmer liegen zum Wald, andere blicken ins Tal und auf die Berge. Vier Kategorien, vom Economy-Zimmer bis zur Familiensuite mit Whirlpool.",
+    "hinweis": "Alle Zimmer sind rauchfrei. Geraucht wird auf dem Balkon oder in der Smoker Lounge.",
+    "kategorien": [
+      {
+        "name": "Economy",
+        "personen": "1–2 Personen",
+        "flaeche": "ca. 20 m²",
+        "preis": 180,
+        "text": "Kleinere Zimmer zur Waldseite oder Einzelzimmer mit Aussicht.",
+        "bild": "zimmer-economy",
+        "alt": "Economy-Zimmer mit Doppelbett und Holztäfer"
+      },
+      {
+        "name": "Ambiance",
+        "personen": "1–3 Personen",
+        "flaeche": "ca. 30 m²",
+        "preis": 210,
+        "text": "Zimmer mit Balkon und eindrücklicher Aussicht.",
+        "bild": "zimmer-ambiance",
+        "alt": "Ambiance-Zimmer mit Dachfenster und Holzdecke"
+      },
+      {
+        "name": "Junior Suite",
+        "personen": "2–3 Personen",
+        "flaeche": "ca. 50 m²",
+        "preis": 460,
+        "text": "Balkon mit Aussicht, Whirlpool, Dusche und separates WC.",
+        "bild": "zimmer-junior-suite",
+        "alt": "Helle Junior Suite mit freistehender Badewanne"
+      },
+      {
+        "name": "Suite",
+        "personen": "2–4 Personen",
+        "flaeche": "ca. 70 m²",
+        "preis": 590,
+        "text": "Familiensuite mit Wohn- und Schlafbereich, zusätzlichem Schlafzimmer, Whirlpool und Balkon.",
+        "bild": "zimmer-suite",
+        "alt": "Suite mit Kachelofen, Sitzecke und Holzbalken"
+      }
+    ]
+  },
+  "kulinarik": {
+    "titel": "Gemeinsam geniessen und verweilen",
+    "intro": "Wir kochen mit Produkten von Bauern und Produzenten aus der Region. Fleisch, Fisch, vegetarisch oder vegan, dazu Klassiker und Entdeckungen aus Renés Weinkeller.",
+    "orte": [
+      {
+        "name": "Au Gourmet",
+        "zusatz": "mit Salon bleu",
+        "text": "Kühle Eleganz und edle Materialien. Die frische, kreative Küche der Brigade um René Maeder, Käse und Desserts serviert vom Wagen.",
+        "bild": "au-gourmet",
+        "alt": "Restaurant Au Gourmet mit gedeckten Tischen und Kronleuchter"
+      },
+      {
+        "name": "Restaurant Doldenhorn",
+        "zusatz": "Grüner Saal, Burestube und Laube",
+        "text": "Kreative Menüs und Weine aus dem eigenen Keller, frisch zubereitet und ganz nach den Wünschen unserer Gäste.",
+        "bild": "gruener-saal",
+        "alt": "Der Grüne Saal mit grossen Fenstern und gedeckten Tischen"
+      },
+      {
+        "name": "Bistro & Lobby",
+        "zusatz": "mit Cheminée und Snooker Lounge",
+        "text": "Für den Mittag, eine Kleinigkeit zwischendurch oder einen Drink. Ein Glas Prosecco am Cheminée, danach eine Partie Snooker.",
+        "bild": "bistro-cheminee",
+        "alt": "Zwei Gläser Prosecco vor dem Cheminée"
+      }
+    ],
+    "halbpension": {
+      "titel": "Halbpension mit Auswahl",
+      "text": "Jeden Abend fünf Menüs zur Wahl: drei im Doldenhorn, je eines mit Fleisch, mit Fisch und vegetarisch, sowie zwei mit Schweizer Spezialitäten im Ruedihus."
+    }
+  },
+  "spa": {
+    "titel": "Wasser aus der eigenen Bergquelle",
+    "intro": "Hallenbad, Chillout Lounge, Fitness und Aussenbereich, dazu Saunen, Dampfbad und Salzarium. Ökologisch gebaut, beheizt mit Wärmepumpen, gespeist mit natürlich aufbereitetem Quellwasser.",
+    "hallenbad": "Hallenbad täglich 8 bis 22 Uhr",
+    "waerme": [
+      {
+        "name": "Finnische Sauna",
+        "wert": "ca. 90 °C"
+      },
+      {
+        "name": "Kräutersauna",
+        "wert": "ca. 75 °C"
+      },
+      {
+        "name": "Arven-Biosauna",
+        "wert": "ca. 65 °C"
+      },
+      {
+        "name": "Heusauna",
+        "wert": "ca. 50 °C"
+      },
+      {
+        "name": "Dampfbad",
+        "wert": "45 °C"
+      },
+      {
+        "name": "Salzarium",
+        "wert": "20–30 Min."
+      }
+    ],
+    "massage": {
+      "titel": "Massagen & Kosmetik",
+      "text": "Von der klassischen Massage über Hot Stone und Aromaöl bis zum Heublumenbad. Dazu Gesichtsbehandlungen, etwa für trockene und empfindliche Haut. Termine täglich."
+    }
+  },
+  "feste": {
+    "titel": "Feste & Seminare",
+    "intro": "Unser Event-Team begleitet Sie von der ersten Idee bis zum letzten Gang, mit Pauschalen und transparenten Preisen.",
+    "angebote": [
+      {
+        "name": "Hochzeiten",
+        "text": "Feiern mit Blick auf die Alpen, im Freien oder im eleganten Bankettsaal. Von Blumen und Menükarten bis zur Hochzeitstorte und den Zimmern für Ihre Gäste.",
+        "bild": "feste-hochzeit",
+        "alt": "Festlich gedeckter runder Tisch mit Blumen"
+      },
+      {
+        "name": "Bankette & Familienfeste",
+        "kennzahl": "bis 120 Gäste",
+        "text": "Im Gourmet-Restaurant, in der Burestube, im Wintergarten oder auf der Sonnenterrasse. Vom Candle-Light-Dinner bis zum grossen Bankett.",
+        "bild": "burestube",
+        "alt": "Die Burestube mit Holztäfer und gedeckten Tischen"
+      },
+      {
+        "name": "Seminare & Tagungen",
+        "kennzahl": "bis 300 Personen",
+        "text": "Moderne Räume mit Technik. Pauschalen mit Pausenverpflegung, Mittag- und Abendessen in unseren Restaurants.",
+        "bild": "feste-seminarsaal",
+        "alt": "Heller Saal mit runden Tischen und Rundbogenfenstern"
+      }
+    ],
+    "zitat": {
+      "text": "Das Essen war exzellent zubereitet und liess keine Wünsche offen. Zudem waren sämtliche Räumlichkeiten sehr stilvoll und edel dekoriert.",
+      "von": "Valery und Urs",
+      "anlass": "Hochzeit im Mai 2022"
+    }
+  },
+  "ruedihus": {
+    "eyebrow": "Unser zweites Haus",
+    "titel": "Landgasthof Ruedihus",
+    "text": "Gleich gegenüber liegt unser Landgasthof. Hier servieren wir Schweizer Spezialitäten, und auch unsere Halbpensionsgäste dürfen hier ihr Menü wählen."
+  },
+  "partner": [
+    {
+      "name": "Relais & Châteaux",
+      "url": "https://www.relaischateaux.com/us/hotel/waldhotel-doldenhorn/"
+    },
+    {
+      "name": "Gault&Millau",
+      "url": "https://www.gaultmillau.ch/restaurants/waldhotel-doldenhorn-18545"
+    },
+    {
+      "name": "Les Grandes Tables de Suisse",
+      "url": "https://www.lesgrandestablesdesuisse.ch/hotel/waldhotel-doldenhorn/"
+    },
+    {
+      "name": "Gilde etablierter Schweizer Gastronomen",
+      "url": "https://www.gilde.ch/"
+    }
+  ],
+  "aktuell": {
+    "hauszeitung": {
+      "titel": "Doldenhorn- und Ruedihuspost",
+      "text": "Die Sommerausgabe 2026 unserer Hauszeitung mit Neuigkeiten aus beiden Häusern."
+    },
+    "jobs": {
+      "titel": "Arbeiten bei Freunden",
+      "text": "Wir suchen Verstärkung: Sous Chef, Koch, Rezeption und Service (m/w/d). Wir freuen uns auf Ihre Bewerbung."
+    }
+  }
+}

@@ -1,0 +1,57 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/img/logo-waldhotel-weiss.png';
+import d from '../data/waldhotel.de.json';
+const k = d.kontakt;
+const jahr = new Date().getFullYear();
+---
+<footer class="fuss">
+  <div class="wrap fuss-raster">
+    <div class="fuss-marke">
+      <Image src={logo} alt="Waldhotel Doldenhorn" width={150} densities={[1, 2]} loading="lazy" />
+      <p class="fuss-slogan">{d.slogan}</p>
+    </div>
+    <div>
+      <h2 class="fuss-titel">Adresse</h2>
+      <address>
+        {d.name}<br />{k.strasse}<br />{k.plz} {k.ort}
+      </address>
+      <a class="fuss-link" href={k.karte} rel="noopener">Route planen</a>
+    </div>
+    <div>
+      <h2 class="fuss-titel">Kontakt</h2>
+      <ul class="fuss-liste">
+        <li><a href={k.telefonLink}>{k.telefon}</a></li>
+        <li><a href={`mailto:${k.email}`}>{k.email}</a></li>
+        <li><a href={`mailto:${k.emailEvent}`}>{k.emailEvent}</a></li>
+      </ul>
+    </div>
+    <div>
+      <h2 class="fuss-titel">Folgen Sie uns</h2>
+      <ul class="fuss-liste">
+        <li><a href={k.instagram} rel="noopener">Instagram</a></li>
+        <li><a href={k.facebook} rel="noopener">Facebook</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="wrap">
+    <p class="fuss-unten">© {jahr} {d.name}, Familie Maeder</p>
+  </div>
+</footer>
+
+<style>
+  .fuss { background: var(--wald-950); color: rgba(246, 242, 234, .82); padding: clamp(3.5rem, 7vw, 5.5rem) 0 1.5rem; font-size: .97rem; }
+  .fuss-raster { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 2.5rem; }
+  .fuss-marke :global(img) { width: 150px; height: auto; }
+  .fuss-slogan { font-family: var(--serif); font-size: 1.25rem; color: var(--papier); margin-top: 1.25rem; }
+  .fuss-titel { font-family: var(--sans); font-size: .76rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--holz-hell); margin-bottom: .9rem; }
+  address { font-style: normal; margin-bottom: .6rem; }
+  .fuss-liste { list-style: none; margin: 0; padding: 0; }
+  .fuss-liste li { margin-bottom: .35rem; }
+  .fuss a { text-decoration: none; display: inline-block; padding: .15rem 0; }
+  .fuss a:hover { color: var(--papier); text-decoration: underline; text-underline-offset: .25em; }
+  .fuss-link { color: var(--holz-hell); }
+  .fuss-unten { margin-top: 3.5rem; padding-top: 1.25rem; border-top: 1px solid var(--linie-hell); font-size: .85rem; color: rgba(246, 242, 234, .6); }
+  @media (max-width: 860px) { .fuss-raster { grid-template-columns: 1fr 1fr; } .fuss-marke { grid-column: 1 / -1; } }
+  @media (max-width: 480px) { .fuss-raster { grid-template-columns: 1fr; } }
+</style>

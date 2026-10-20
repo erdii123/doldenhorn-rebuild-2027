@@ -1,0 +1,55 @@
+---
+import '../styles/global.css';
+import Kopf from '../components/Kopf.astro';
+import Fuss from '../components/Fuss.astro';
+import d from '../data/waldhotel.de.json';
+
+interface Props {
+  title: string;
+  description: string;
+  pfad: string;
+  ogBild?: string;
+  schema?: object;
+}
+const { title, description, pfad, ogBild = 'og/waldhotel-doldenhorn.jpg', schema } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const canonical = new URL(pfad, Astro.site).href;
+const og = new URL(ogBild, Astro.site).href;
+// Vorschau ist nie indexierbar. Erst beim Livegang mit LIVE=1 bauen.
+const indexierbar = process.env.LIVE === '1';
+---
+<!doctype html>
+<html lang="de-CH">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {!indexierbar && <meta name="robots" content="noindex, nofollow" />}
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="de_CH" />
+    <meta property="og:site_name" content={d.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={og} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Luftaufnahme des Waldhotels Doldenhorn am Waldrand in Kandersteg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#1b2620" />
+    <link rel="icon" href={`${base}favicon.png`} type="image/png" />
+    <link rel="apple-touch-icon" href={`${base}apple-touch-icon.png`} />
+    <slot name="head" />
+    {schema && <script type="application/ld+json" set:html={JSON.stringify(schema)} />}
+  </head>
+  <body>
+    <a class="skip" href="#inhalt">Zum Inhalt springen</a>
+    <Kopf />
+    <main id="inhalt">
+      <slot />
+    </main>
+    <Fuss />
+  </body>
+</html>

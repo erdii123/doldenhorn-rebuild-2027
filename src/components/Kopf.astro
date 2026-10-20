@@ -1,0 +1,120 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/img/logo-waldhotel-weiss.png';
+import d from '../data/waldhotel.de.json';
+const base = import.meta.env.BASE_URL;
+const start = `${base}doldenhorn/`;
+const nav = [
+  { label: 'Zimmer', href: `${start}#zimmer` },
+  { label: 'Kulinarik', href: `${start}#kulinarik` },
+  { label: 'Spa', href: `${start}#spa` },
+  { label: 'Feste & Seminare', href: `${start}#feste` },
+  { label: 'Ruedihus', href: `${start}#ruedihus` },
+  { label: 'Kontakt', href: `${start}#kontakt` },
+];
+---
+<header class="kopf" data-kopf>
+  <div class="kopf-innen">
+    <a class="kopf-logo" href={start} aria-label="Waldhotel Doldenhorn, zur Startseite">
+      <Image src={logo} alt="" width={120} densities={[1, 2]} loading="eager" fetchpriority="high" />
+    </a>
+    <nav class="kopf-nav" id="hauptnavigation" aria-label="Hauptnavigation" data-nav>
+      <ul>
+        {nav.map((n) => <li><a href={n.href}>{n.label}</a></li>)}
+      </ul>
+      <a class="kopf-tel" href={d.kontakt.telefonLink}>{d.kontakt.telefon}</a>
+    </nav>
+    <div class="kopf-aktionen">
+      <a class="btn btn-primaer kopf-buchen" href={d.links.buchen} rel="noopener">Buchen</a>
+      <button class="kopf-menu" type="button" aria-expanded="false" aria-controls="hauptnavigation" data-menu>
+        <span class="kopf-menu-linien" aria-hidden="true"></span>
+        <span class="sr-only">Menü</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<style>
+  .kopf {
+    position: fixed; inset: 0 0 auto 0; z-index: 50;
+    color: var(--papier);
+    background: linear-gradient(to bottom, rgba(18, 26, 21, .55), rgba(18, 26, 21, 0));
+    transition: background-color .25s, box-shadow .25s;
+  }
+  .kopf.ist-fest { background: var(--wald-900); box-shadow: 0 1px 0 var(--linie-hell); }
+  .kopf-innen {
+    max-width: calc(var(--max) + 2 * var(--rand)); margin: 0 auto; padding: 0 var(--rand);
+    height: var(--kopf); display: flex; align-items: center; gap: 2rem;
+  }
+  .kopf-logo { flex: none; display: block; }
+  .kopf-logo :global(img) { width: 120px; height: auto; }
+  .kopf-nav { flex: 1; display: flex; align-items: center; justify-content: flex-end; gap: 1.6rem; }
+  .kopf-nav ul { display: flex; gap: 1.6rem; list-style: none; margin: 0; padding: 0; }
+  .kopf-nav a { text-decoration: none; font-size: .95rem; font-weight: 500; padding: .5rem 0; display: inline-block; border-bottom: 1px solid transparent; }
+  .kopf-nav a:hover { border-bottom-color: var(--holz-hell); }
+  .kopf-tel { font-variant-numeric: tabular-nums; opacity: .85; white-space: nowrap; }
+  .kopf-aktionen { display: flex; align-items: center; gap: .75rem; }
+  .kopf-buchen { min-height: 44px; padding: .65rem 1.25rem; }
+  .kopf-menu { display: none; }
+
+  @media (max-width: 1180px) { .kopf-tel { display: none; } }
+  @media (max-width: 1020px) {
+    .kopf-innen { justify-content: space-between; }
+    .kopf-logo :global(img) { width: 104px; }
+    .kopf-menu {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 48px; height: 48px; background: none; border: 1px solid var(--linie-hell); border-radius: 2px; color: inherit; cursor: pointer;
+    }
+    .kopf-menu-linien, .kopf-menu-linien::before, .kopf-menu-linien::after {
+      display: block; width: 20px; height: 1.5px; background: currentColor; position: relative; transition: transform .2s, background-color .2s;
+    }
+    .kopf-menu-linien::before, .kopf-menu-linien::after { content: ''; position: absolute; left: 0; }
+    .kopf-menu-linien::before { top: -6px; }
+    .kopf-menu-linien::after { top: 6px; }
+    .kopf-menu[aria-expanded='true'] .kopf-menu-linien { background: transparent; }
+    .kopf-menu[aria-expanded='true'] .kopf-menu-linien::before { transform: translateY(6px) rotate(45deg); }
+    .kopf-menu[aria-expanded='true'] .kopf-menu-linien::after { transform: translateY(-6px) rotate(-45deg); }
+    .kopf-nav {
+      position: fixed; inset: var(--kopf) 0 auto 0; height: calc(100dvh - var(--kopf));
+      background: var(--wald-900); flex-direction: column; align-items: stretch; justify-content: flex-start; gap: 0;
+      padding: 1.5rem var(--rand) 2rem; overflow-y: auto;
+      visibility: hidden; opacity: 0; transition: opacity .2s, visibility 0s .2s;
+    }
+    .kopf-nav.ist-offen { visibility: visible; opacity: 1; transition: opacity .2s; }
+    .kopf-nav ul { flex-direction: column; gap: 0; }
+    .kopf-nav li { border-bottom: 1px solid var(--linie-hell); }
+    .kopf-nav ul a { display: block; padding: 1rem 0; font-family: var(--serif); font-size: 1.6rem; font-weight: 400; border: 0; }
+    .kopf-tel { display: block; margin-top: 1.5rem; font-size: 1.05rem; }
+  }
+  @media (max-width: 380px) { .kopf-buchen { padding: .65rem .9rem; } }
+</style>
+
+<script>
+  const kopf = document.querySelector<HTMLElement>('[data-kopf]');
+  const btn = document.querySelector<HTMLButtonElement>('[data-menu]');
+  const nav = document.querySelector<HTMLElement>('[data-nav]');
+  const hero = document.querySelector('[data-hero]');
+  const setFest = () => kopf?.classList.toggle('ist-fest', !hero || window.scrollY > 40 || btn?.getAttribute('aria-expanded') === 'true');
+  setFest();
+  window.addEventListener('scroll', setFest, { passive: true });
+  const schliessen = () => {
+    btn?.setAttribute('aria-expanded', 'false');
+    nav?.classList.remove('ist-offen');
+    document.body.style.overflow = '';
+    setFest();
+  };
+  btn?.addEventListener('click', () => {
+    const offen = btn.getAttribute('aria-expanded') === 'true';
+    if (offen) { schliessen(); btn.focus(); return; }
+    btn.setAttribute('aria-expanded', 'true');
+    nav?.classList.add('ist-offen');
+    document.body.style.overflow = 'hidden';
+    setFest();
+    nav?.querySelector('a')?.focus();
+  });
+  nav?.addEventListener('click', (e) => { if ((e.target as HTMLElement).closest('a')) schliessen(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && btn?.getAttribute('aria-expanded') === 'true') { schliessen(); btn.focus(); }
+  });
+  window.matchMedia('(min-width: 1021px)').addEventListener('change', (m) => { if (m.matches) schliessen(); });
+</script>

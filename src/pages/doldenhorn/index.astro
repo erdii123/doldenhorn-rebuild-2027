@@ -1,0 +1,487 @@
+---
+import { Picture } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+import Base from '../../layouts/Base.astro';
+import d from '../../data/waldhotel.de.json';
+
+const bilder = import.meta.glob<{ default: ImageMetadata }>('../../assets/img/*.{jpg,jpeg,png,webp}', { eager: true });
+const bild = (name: string) => {
+  const treffer = Object.entries(bilder).find(([p]) => p.split('/').pop()!.replace(/\.\w+$/, '') === name);
+  if (!treffer) throw new Error(`Bild fehlt: ${name}`);
+  return treffer[1].default;
+};
+const base = import.meta.env.BASE_URL;
+const k = d.kontakt;
+const chf = (n: number) => `ab CHF ${n}`;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Hotel',
+  name: d.name,
+  slogan: d.slogan,
+  url: 'https://doldenhorn-ruedihus.ch/doldenhorn/',
+  image: 'https://doldenhorn-ruedihus.ch/og/waldhotel-doldenhorn.jpg',
+  telephone: k.telefon,
+  email: k.email,
+  address: { '@type': 'PostalAddress', streetAddress: k.strasse, postalCode: k.plz, addressLocality: k.ort, addressRegion: 'BE', addressCountry: 'CH' },
+  starRating: { '@type': 'Rating', ratingValue: '4', bestRating: '5' },
+  priceRange: 'ab CHF 180 pro Nacht',
+  amenityFeature: [
+    { '@type': 'LocationFeatureSpecification', name: 'Hallenbad', value: true },
+    { '@type': 'LocationFeatureSpecification', name: 'Sauna', value: true },
+    { '@type': 'LocationFeatureSpecification', name: 'Restaurant', value: true },
+    { '@type': 'LocationFeatureSpecification', name: 'Fitness', value: true },
+  ],
+  sameAs: [k.instagram, k.facebook],
+};
+---
+<Base title={d.seo.title} description={d.seo.description} pfad="/doldenhorn/" schema={schema}>
+
+  <!-- Hero -->
+  <section class="hero" data-hero aria-labelledby="hero-titel">
+    <div class="hero-medien" data-hero-medien>
+      <Picture src={bild('hero-luftbild')} formats={['avif', 'webp']} widths={[640, 960, 1280, 1920, 2560]} sizes="100vw"
+        alt="Luftaufnahme: das Waldhotel Doldenhorn zwischen Wald und Wiesen in Kandersteg" loading="eager" fetchpriority="high" />
+    </div>
+    <div class="hero-verlauf" aria-hidden="true"></div>
+    <div class="wrap hero-inhalt">
+      <h1 id="hero-titel">
+        <span class="eyebrow">{d.hero.eyebrow}</span>
+        <span class="hero-slogan">{d.slogan}</span>
+      </h1>
+      <p class="hero-zeile">{d.hero.zeile}</p>
+      <div class="hero-knoepfe">
+        <a class="btn btn-primaer" href={d.links.buchen} rel="noopener">Zimmer buchen</a>
+        <a class="btn btn-kontur pfeil" href="#willkommen">Das Haus entdecken</a>
+      </div>
+    </div>
+    <button class="hero-pause" type="button" hidden data-video-knopf aria-pressed="false">
+      <span data-video-label>Video pausieren</span>
+    </button>
+  </section>
+
+  <!-- Gastgeber -->
+  <section class="abschnitt" id="willkommen" aria-labelledby="gastgeber-titel">
+    <div class="wrap gastgeber">
+      <figure class="gastgeber-bild">
+        <Picture src={bild('gastgeber-familie-maeder')} formats={['avif', 'webp']} widths={[480, 720, 960, 1280]}
+          sizes="(min-width: 960px) 44vw, 100vw" alt="Die Gastgeber: Familie Maeder und Lisa Ziegler" />
+      </figure>
+      <div class="gastgeber-text">
+        <span class="eyebrow">Ihre Gastgeber</span>
+        <h2 id="gastgeber-titel">{d.gastgeber.titel}</h2>
+        <div class="brief">
+          {d.gastgeber.absaetze.map((a) => <p>{a}</p>)}
+        </div>
+        <p class="unterschrift">{d.gastgeber.unterschrift}</p>
+      </div>
+    </div>
+    <div class="wrap">
+      <ul class="fakten">
+        {d.gastgeber.fakten.map((f) => (
+          <li><span class="fakt-wert">{f.wert}</span><span class="fakt-text">{f.text}</span></li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <div class="bildband" role="presentation">
+    <Picture src={bild('lobby-galerie')} formats={['avif', 'webp']} widths={[640, 1280, 1920, 2560]} sizes="100vw"
+      alt="Die Lobby mit Holzgalerie, Flügel und Cheminée" />
+  </div>
+
+  <!-- Zimmer -->
+  <section class="abschnitt" id="zimmer" aria-labelledby="zimmer-titel">
+    <div class="wrap">
+      <div class="kopfzeile">
+        <div>
+          <span class="eyebrow">Übernachten</span>
+          <h2 id="zimmer-titel">{d.zimmer.titel}</h2>
+        </div>
+        <div>
+          <p class="lead">{d.zimmer.intro}</p>
+          <a class="textlink" href={d.links.buchen} rel="noopener">Verfügbarkeit prüfen</a>
+        </div>
+      </div>
+      <ul class="zimmer-liste" tabindex="0" aria-label="Zimmerkategorien">
+        {d.zimmer.kategorien.map((z) => (
+          <li class="zimmer-karte">
+            <Picture src={bild(z.bild)} formats={['avif', 'webp']} widths={[400, 640, 900]}
+              sizes="(min-width: 1100px) 290px, (min-width: 640px) 46vw, 82vw" alt={z.alt} />
+            <h3>{z.name}</h3>
+            <p class="zimmer-meta">{z.personen} · {z.flaeche}</p>
+            <p class="zimmer-text">{z.text}</p>
+            <p class="zimmer-preis">{chf(z.preis)} <span>pro Nacht</span></p>
+          </li>
+        ))}
+      </ul>
+      <p class="hinweis">{d.zimmer.hinweis}</p>
+    </div>
+  </section>
+
+  <!-- Kulinarik -->
+  <section class="abschnitt dunkel" id="kulinarik" aria-labelledby="kulinarik-titel">
+    <div class="wrap">
+      <div class="kopfzeile">
+        <div>
+          <span class="eyebrow">Kulinarik</span>
+          <h2 id="kulinarik-titel">{d.kulinarik.titel}</h2>
+        </div>
+        <p class="lead">{d.kulinarik.intro}</p>
+      </div>
+      <ul class="orte">
+        {d.kulinarik.orte.map((o) => (
+          <li class="ort">
+            <Picture src={bild(o.bild)} formats={['avif', 'webp']} widths={[480, 720, 1000]}
+              sizes="(min-width: 960px) 30vw, 100vw" alt={o.alt} />
+            <h3>{o.name}</h3>
+            <p class="ort-zusatz">{o.zusatz}</p>
+            <p>{o.text}</p>
+          </li>
+        ))}
+      </ul>
+      <div class="halbpension">
+        <div class="halbpension-text">
+          <h3>{d.kulinarik.halbpension.titel}</h3>
+          <p>{d.kulinarik.halbpension.text}</p>
+          <p class="reservieren">Tisch reservieren: <a class="textlink" href={k.telefonLink}>{k.telefon}</a></p>
+        </div>
+        <div class="halbpension-bilder">
+          <Picture src={bild('teller-1')} formats={['avif', 'webp']} widths={[400, 640, 900]} sizes="(min-width: 960px) 28vw, 50vw"
+            alt="Angerichteter Teller mit Fleisch, Karotten und Spinatknödeln" />
+          <Picture src={bild('weinkeller')} formats={['avif', 'webp']} widths={[400, 640, 900]} sizes="(min-width: 960px) 28vw, 50vw"
+            alt="Weinflaschen im Holzregal des Weinkellers" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Spa -->
+  <section class="abschnitt" id="spa" aria-labelledby="spa-titel">
+    <div class="wrap spa">
+      <div class="spa-bild">
+        <Picture src={bild('spa-hallenbad')} formats={['avif', 'webp']} widths={[640, 960, 1280, 1700]}
+          sizes="(min-width: 960px) 56vw, 100vw" alt="Das Hallenbad mit Säulen und Rundbogenfenstern" />
+      </div>
+      <div class="spa-text">
+        <span class="eyebrow">Spa & Wellness</span>
+        <h2 id="spa-titel">{d.spa.titel}</h2>
+        <p class="lead">{d.spa.intro}</p>
+        <p class="spa-zeit">{d.spa.hallenbad}</p>
+        <h3 class="spa-untertitel">Saunen und Bäder</h3>
+        <dl class="waerme">
+          {d.spa.waerme.map((w) => (<div><dt>{w.name}</dt><dd>{w.wert}</dd></div>))}
+        </dl>
+      </div>
+    </div>
+    <div class="wrap spa-reihe">
+      <Picture src={bild('spa-sauna')} formats={['avif', 'webp']} widths={[480, 720, 960]} sizes="(min-width: 960px) 32vw, 100vw"
+        alt="Sauna mit warm leuchtender Salzsteinwand" />
+      <Picture src={bild('spa-eisgrotte')} formats={['avif', 'webp']} widths={[480, 720, 960]} sizes="(min-width: 960px) 32vw, 100vw"
+        alt="Abkühlung mit Eis in der blau beleuchteten Grotte" />
+      <div class="massage">
+        <h3>{d.spa.massage.titel}</h3>
+        <p>{d.spa.massage.text}</p>
+        <div class="massage-knoepfe">
+          <a class="btn btn-primaer" href={d.links.spaTermin} rel="noopener">Termin buchen</a>
+          <a class="textlink" href={`mailto:${k.emailSpa}`}>{k.emailSpa}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feste & Seminare -->
+  <section class="abschnitt stein" id="feste" aria-labelledby="feste-titel">
+    <div class="wrap">
+      <div class="kopfzeile">
+        <div>
+          <span class="eyebrow">Anlässe</span>
+          <h2 id="feste-titel">{d.feste.titel}</h2>
+        </div>
+        <p class="lead">{d.feste.intro}</p>
+      </div>
+      <ul class="anlaesse">
+        {d.feste.angebote.map((a) => (
+          <li class="anlass">
+            <Picture src={bild(a.bild)} formats={['avif', 'webp']} widths={[480, 720, 960]}
+              sizes="(min-width: 960px) 30vw, 100vw" alt={a.alt} />
+            <div class="anlass-kopf">
+              <h3>{a.name}</h3>
+              {a.kennzahl && <span class="kennzahl">{a.kennzahl}</span>}
+            </div>
+            <p>{a.text}</p>
+          </li>
+        ))}
+      </ul>
+      <figure class="zitat">
+        <blockquote><p>{d.feste.zitat.text}</p></blockquote>
+        <figcaption>{d.feste.zitat.von}, {d.feste.zitat.anlass}</figcaption>
+      </figure>
+      <div class="zentriert">
+        <a class="btn btn-primaer" href={`mailto:${k.emailEvent}?subject=Anfrage%20Anlass`}>Anlass anfragen</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Ruedihus -->
+  <section class="dunkel ruedihus" id="ruedihus" aria-labelledby="ruedihus-titel">
+    <div class="ruedihus-bild">
+      <Picture src={bild('ruedihus')} formats={['avif', 'webp']} widths={[480, 720, 1080]}
+        sizes="(min-width: 860px) 50vw, 100vw" alt="Der Landgasthof Ruedihus mit Garten und Bergkulisse" />
+    </div>
+    <div class="ruedihus-text">
+      <span class="eyebrow">{d.ruedihus.eyebrow}</span>
+      <h2 id="ruedihus-titel">{d.ruedihus.titel}</h2>
+      <p class="lead">{d.ruedihus.text}</p>
+      <a class="btn btn-kontur pfeil" href={d.links.ruedihus}>Zum Ruedihus</a>
+    </div>
+  </section>
+
+  <!-- Partner -->
+  <section class="partner" aria-labelledby="partner-titel">
+    <div class="wrap">
+      <h2 id="partner-titel" class="eyebrow">Partner & Auszeichnungen</h2>
+      <ul>
+        {d.partner.map((p) => <li><a href={p.url} rel="noopener">{p.name}</a></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Aktuell -->
+  <section class="abschnitt aktuell-abschnitt" aria-labelledby="aktuell-titel">
+    <div class="wrap">
+      <span class="eyebrow">Aktuell</span>
+      <h2 id="aktuell-titel" class="sr-only">Aktuell</h2>
+      <div class="aktuell">
+        <article class="aktuell-karte">
+          <h3>{d.aktuell.hauszeitung.titel}</h3>
+          <p>{d.aktuell.hauszeitung.text}</p>
+          <a class="textlink" href={`${base}${d.links.hauszeitung}`}>Ausgabe lesen <span class="dateiinfo">(PDF, 10 MB)</span></a>
+        </article>
+        <article class="aktuell-karte">
+          <h3>{d.aktuell.jobs.titel}</h3>
+          <p>{d.aktuell.jobs.text}</p>
+          <a class="textlink" href={`mailto:${k.emailJobs}?subject=Bewerbung`}>{k.emailJobs}</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Kontakt -->
+  <section class="kontakt stein" id="kontakt" aria-labelledby="kontakt-titel">
+    <div class="kontakt-bild">
+      <Picture src={bild('luftbild-nah')} formats={['avif', 'webp']} widths={[480, 720, 1080, 1440]}
+        sizes="(min-width: 860px) 50vw, 100vw" alt="Luftaufnahme des Hotels mit Zufahrt und Parkplatz" />
+    </div>
+    <div class="kontakt-text">
+      <span class="eyebrow">Kontakt & Anreise</span>
+      <h2 id="kontakt-titel">Wir freuen uns auf Sie</h2>
+      <address class="kontakt-adresse">
+        {d.name}<br />{k.strasse}<br />{k.plz} {k.ort}
+      </address>
+      <ul class="kontakt-liste">
+        <li><span>Telefon</span><a href={k.telefonLink}>{k.telefon}</a></li>
+        <li><span>E-Mail</span><a href={`mailto:${k.email}`}>{k.email}</a></li>
+        <li><span>Anlässe</span><a href={`mailto:${k.emailEvent}`}>{k.emailEvent}</a></li>
+      </ul>
+      <div class="kontakt-knoepfe">
+        <a class="btn btn-primaer" href={d.links.buchen} rel="noopener">Zimmer buchen</a>
+        <a class="btn btn-kontur" href={k.karte} rel="noopener">Route planen</a>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script define:vars={{ videoSrc: `${base}media/waldhotel-luftaufnahme.mp4` }}>
+  const medien = document.querySelector('[data-hero-medien]');
+  const knopf = document.querySelector('[data-video-knopf]');
+  const label = document.querySelector('[data-video-label]');
+  const ruhig = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const breit = window.matchMedia('(min-width: 768px)').matches;
+  const sparen = navigator.connection && navigator.connection.saveData;
+  if (medien && knopf && !ruhig && breit && !sparen) {
+    const v = document.createElement('video');
+    Object.assign(v, { muted: true, loop: true, playsInline: true, autoplay: true, preload: 'auto' });
+    v.setAttribute('aria-hidden', 'true');
+    v.className = 'hero-video';
+    v.src = videoSrc;
+    v.addEventListener('playing', () => { v.classList.add('ist-sichtbar'); knopf.hidden = false; }, { once: true });
+    medien.appendChild(v);
+    knopf.addEventListener('click', () => {
+      if (v.paused) { v.play(); label.textContent = 'Video pausieren'; knopf.setAttribute('aria-pressed', 'false'); }
+      else { v.pause(); label.textContent = 'Video abspielen'; knopf.setAttribute('aria-pressed', 'true'); }
+    });
+  }
+</script>
+
+<style>
+  /* Hero */
+  .hero { position: relative; min-height: 100svh; max-height: 1100px; display: flex; align-items: flex-end; color: var(--papier); overflow: hidden; background: var(--wald-950); }
+  .hero-medien, .hero-medien :global(picture), .hero-medien :global(img), .hero-medien :global(video) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hero-medien :global(.hero-video) { opacity: 0; transition: opacity 1s; }
+  .hero-medien :global(.hero-video.ist-sichtbar) { opacity: 1; }
+  .hero-verlauf { position: absolute; inset: 0; background:
+    linear-gradient(to top, rgba(18, 26, 21, .85) 0%, rgba(18, 26, 21, .35) 45%, rgba(18, 26, 21, .1) 70%, rgba(18, 26, 21, .4) 100%); }
+  .hero-inhalt { position: relative; padding-bottom: clamp(3rem, 8vh, 6rem); padding-top: calc(var(--kopf) + 3rem); }
+  .hero h1 { margin: 0; }
+  .hero .eyebrow { color: var(--holz-hell); }
+  .hero-slogan { display: block; font-size: clamp(2.7rem, 7vw, 5.8rem); line-height: 1.02; letter-spacing: -0.025em; max-width: 11ch; }
+  .hero-zeile { margin: 1.4rem 0 2rem; font-size: clamp(.98rem, 1.4vw, 1.1rem); color: rgba(246, 242, 234, .85); max-width: 36em; }
+  .hero-knoepfe { display: flex; flex-wrap: wrap; gap: .75rem; }
+  .hero-pause {
+    position: absolute; right: var(--rand); bottom: clamp(3rem, 8vh, 6rem); z-index: 2;
+    min-height: 44px; padding: .5rem 1rem; background: rgba(18, 26, 21, .55); color: var(--papier);
+    border: 1px solid var(--linie-hell); border-radius: 2px; font: 500 .85rem var(--sans); cursor: pointer;
+  }
+  .hero-pause:hover { background: rgba(18, 26, 21, .8); }
+  .hero-pause[hidden] { display: none; }
+
+  /* Gastgeber */
+  .gastgeber { display: grid; grid-template-columns: 5fr 6fr; gap: clamp(2rem, 6vw, 6rem); align-items: center; }
+  .gastgeber-bild { margin: 0; }
+  .gastgeber-bild :global(img) { width: 100%; aspect-ratio: 4 / 3.4; object-fit: cover; object-position: 50% 30%; }
+  .gastgeber-text h2 { margin-bottom: 1.6rem; max-width: 14ch; }
+  .brief { color: var(--tinte-2); max-width: 34em; }
+  .unterschrift { font-family: var(--serif); font-size: 1.2rem; color: var(--tinte); margin-top: 1.6rem; padding-top: 1.2rem; border-top: 1px solid var(--linie); max-width: 30em; }
+  .fakten { list-style: none; padding: 0; margin: clamp(3.5rem, 7vw, 6rem) 0 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+  .fakten li { border-top: 1px solid var(--tinte); padding-top: 1.1rem; display: grid; gap: .35rem; }
+  .fakt-wert { font-family: var(--serif); font-size: clamp(2.4rem, 4.5vw, 3.6rem); line-height: 1; color: var(--holz); font-variant-numeric: lining-nums; }
+  .fakt-text { color: var(--tinte-2); max-width: 22em; }
+
+  .bildband :global(img) { width: 100%; height: clamp(260px, 52vw, 680px); object-fit: cover; }
+
+  /* Kopfzeilen der Abschnitte */
+  .kopfzeile { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem clamp(2rem, 6vw, 6rem); align-items: end; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
+  .kopfzeile .lead { margin-bottom: .9rem; }
+  .kopfzeile .lead:last-child { margin-bottom: 0; }
+
+  /* Zimmer */
+  .zimmer-liste { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(1rem, 2vw, 1.75rem); }
+  .zimmer-karte :global(img) { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; margin-bottom: 1.1rem; }
+  .zimmer-karte h3 { margin-bottom: .3rem; }
+  .zimmer-meta { font-size: .9rem; color: var(--tinte-2); margin-bottom: .6rem; font-variant-numeric: tabular-nums; }
+  .zimmer-text { font-size: .98rem; margin-bottom: .9rem; }
+  .zimmer-preis { font-weight: 600; color: var(--holz); border-top: 1px solid var(--linie); padding-top: .7rem; font-variant-numeric: tabular-nums; }
+  .zimmer-preis span { font-weight: 400; color: var(--tinte-2); font-size: .9rem; }
+  .hinweis { margin-top: 2.2rem; font-size: .9rem; color: var(--tinte-2); }
+
+  /* Kulinarik */
+  .orte { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1.5rem, 3vw, 2.5rem); }
+  .ort :global(img) { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; margin-bottom: 1.3rem; }
+  .ort h3 { margin-bottom: .2rem; }
+  .ort-zusatz { font-size: .85rem; letter-spacing: .04em; color: var(--holz-hell); margin-bottom: .8rem; }
+  .ort p:last-child { color: rgba(246, 242, 234, .78); }
+  .halbpension { margin-top: clamp(3.5rem, 7vw, 6rem); display: grid; grid-template-columns: 5fr 7fr; gap: clamp(2rem, 5vw, 5rem); align-items: center; padding-top: clamp(2.5rem, 5vw, 4rem); border-top: 1px solid var(--linie-hell); }
+  .halbpension h3 { font-size: clamp(1.7rem, 2.6vw, 2.3rem); margin-bottom: 1rem; }
+  .halbpension-text p { color: rgba(246, 242, 234, .82); }
+  .reservieren { margin-top: 1.4rem; }
+  .halbpension-bilder { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .halbpension-bilder :global(img) { width: 100%; aspect-ratio: 1; object-fit: cover; }
+
+  /* Spa */
+  .spa { display: grid; grid-template-columns: 7fr 5fr; gap: clamp(2rem, 5vw, 5rem); align-items: start; }
+  .spa-bild :global(img) { width: 100%; aspect-ratio: 4 / 4.4; object-fit: cover; }
+  .spa-text h2 { margin-bottom: 1.4rem; }
+  .spa-zeit { display: inline-block; margin: 1.6rem 0 2.2rem; padding: .5rem .9rem; border: 1px solid var(--holz); color: var(--holz); font-weight: 600; font-size: .92rem; }
+  .spa-untertitel { font-family: var(--sans); font-size: .78rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: var(--tinte-2); margin-bottom: .6rem; }
+  .waerme { margin: 0; }
+  .waerme div { display: flex; justify-content: space-between; gap: 1rem; padding: .75rem 0; border-bottom: 1px solid var(--linie); }
+  .waerme dt { font-family: var(--serif); font-size: 1.2rem; }
+  .waerme dd { margin: 0; color: var(--tinte-2); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .spa-reihe { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: clamp(1rem, 2vw, 1.75rem); margin-top: clamp(1rem, 2vw, 1.75rem); }
+  .spa-reihe :global(img) { width: 100%; aspect-ratio: 4 / 3.2; object-fit: cover; }
+  .massage { background: var(--wald-900); color: var(--papier); padding: clamp(1.5rem, 3vw, 2.4rem); display: flex; flex-direction: column; justify-content: center; }
+  .massage h3 { margin-bottom: .8rem; }
+  .massage p { color: rgba(246, 242, 234, .8); font-size: .98rem; }
+  .massage-knoepfe { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.4rem; margin-top: 1.4rem; }
+  .massage .btn-primaer { background: var(--holz-hell); color: var(--wald-950); }
+  .massage .btn-primaer:hover { background: #e2bd8c; }
+  .massage .textlink { color: var(--holz-hell); }
+
+  /* Feste */
+  .anlaesse { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1.5rem, 3vw, 2.5rem); }
+  .anlass :global(img) { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; margin-bottom: 1.2rem; }
+  .anlass-kopf { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .4rem 1rem; margin-bottom: .7rem; }
+  .kennzahl { font-size: .85rem; font-weight: 600; color: var(--holz); white-space: nowrap; }
+  .anlass p { color: var(--tinte-2); }
+  .zitat { margin: clamp(3.5rem, 7vw, 6rem) auto 0; max-width: 46rem; text-align: center; }
+  .zitat blockquote { margin: 0; }
+  .zitat blockquote p { font-family: var(--serif); font-size: clamp(1.45rem, 2.6vw, 2.1rem); line-height: 1.3; letter-spacing: -0.01em; }
+  .zitat blockquote p::before { content: '«'; color: var(--holz); }
+  .zitat blockquote p::after { content: '»'; color: var(--holz); }
+  .zitat figcaption { margin-top: 1.2rem; color: var(--tinte-2); font-size: .95rem; }
+  .zentriert { text-align: center; margin-top: 2.2rem; }
+
+  /* Ruedihus */
+  .ruedihus { display: grid; grid-template-columns: 1fr 1fr; }
+  .ruedihus-bild :global(img) { width: 100%; height: 100%; min-height: 360px; object-fit: cover; }
+  .ruedihus-text { padding: clamp(3rem, 7vw, 7rem) var(--rand); max-width: 640px; align-self: center; }
+  .ruedihus-text h2 { margin-bottom: 1.4rem; }
+  .ruedihus-text .lead { margin-bottom: 2rem; }
+
+  /* Partner */
+  .partner { padding: clamp(2.5rem, 5vw, 3.5rem) 0; border-bottom: 1px solid var(--linie); }
+  .partner .wrap { display: flex; flex-wrap: wrap; align-items: baseline; gap: 1rem 2.5rem; }
+  .partner h2 { margin: 0; }
+  .partner ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .6rem 2.2rem; }
+  .partner a { font-family: var(--serif); font-size: 1.2rem; text-decoration: none; }
+  .partner a:hover { color: var(--holz); text-decoration: underline; text-underline-offset: .25em; text-decoration-thickness: 1px; }
+
+  /* Aktuell */
+  .aktuell-abschnitt { padding-top: clamp(3.5rem, 7vw, 5.5rem); }
+  .aktuell { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.5rem, 3vw, 2.5rem); }
+  .aktuell-karte { border-top: 1px solid var(--tinte); padding-top: 1.4rem; }
+  .aktuell-karte h3 { margin-bottom: .7rem; }
+  .aktuell-karte p { color: var(--tinte-2); max-width: 32em; }
+  .dateiinfo { font-weight: 400; color: var(--tinte-2); }
+
+  /* Kontakt */
+  .kontakt { display: grid; grid-template-columns: 1fr 1fr; }
+  .kontakt-bild :global(img) { width: 100%; height: 100%; min-height: 340px; object-fit: cover; }
+  .kontakt-text { padding: clamp(3rem, 7vw, 7rem) var(--rand); max-width: 640px; }
+  .kontakt-text h2 { margin-bottom: 1.6rem; }
+  .kontakt-adresse { font-style: normal; font-family: var(--serif); font-size: 1.35rem; line-height: 1.4; margin-bottom: 1.6rem; }
+  .kontakt-liste { list-style: none; margin: 0 0 2rem; padding: 0; }
+  .kontakt-liste li { display: grid; grid-template-columns: 6.5rem 1fr; gap: 1rem; padding: .6rem 0; border-bottom: 1px solid var(--linie); }
+  .kontakt-liste span { color: var(--tinte-2); font-size: .92rem; }
+  .kontakt-liste a { text-decoration: none; overflow-wrap: anywhere; }
+  .kontakt-liste a:hover { color: var(--holz); text-decoration: underline; text-underline-offset: .25em; }
+  .kontakt-knoepfe { display: flex; flex-wrap: wrap; gap: .75rem; }
+
+  /* Responsiv */
+  @media (max-width: 1100px) {
+    .zimmer-liste { grid-template-columns: repeat(2, 1fr); row-gap: 2.5rem; }
+  }
+  @media (max-width: 960px) {
+    .gastgeber, .spa, .halbpension { grid-template-columns: 1fr; }
+    .kopfzeile { grid-template-columns: 1fr; align-items: start; }
+    .orte, .anlaesse { grid-template-columns: 1fr 1fr; }
+    .orte li:last-child, .anlaesse li:last-child { grid-column: 1 / -1; }
+    .orte li:last-child :global(img) { aspect-ratio: 16 / 9; }
+    .anlaesse li:last-child :global(img) { aspect-ratio: 16 / 8; }
+    .spa-reihe { grid-template-columns: 1fr 1fr; }
+    .massage { grid-column: 1 / -1; }
+    .spa-bild :global(img) { aspect-ratio: 16 / 10; }
+  }
+  @media (max-width: 860px) {
+    .ruedihus, .kontakt { grid-template-columns: 1fr; }
+    .ruedihus-bild :global(img), .kontakt-bild :global(img) { min-height: 0; aspect-ratio: 4 / 3; height: auto; }
+    .ruedihus-text, .kontakt-text { max-width: none; }
+  }
+  @media (max-width: 640px) {
+    .fakten { grid-template-columns: 1fr; gap: 1.5rem; }
+    .zimmer-liste {
+      grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: 82%;
+      overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 1rem;
+      margin-right: calc(-1 * var(--rand)); padding-right: var(--rand);
+      scrollbar-width: thin;
+    }
+    .zimmer-karte { scroll-snap-align: start; }
+    .orte, .anlaesse, .aktuell { grid-template-columns: 1fr; }
+    .orte li:last-child :global(img), .ort :global(img) { aspect-ratio: 4 / 3; }
+    .anlaesse li:last-child :global(img) { aspect-ratio: 3 / 2; }
+    .spa-reihe { grid-template-columns: 1fr; }
+    .hero-slogan { max-width: none; }
+    .kontakt-liste li { grid-template-columns: 5.5rem 1fr; }
+  }
+</style>
